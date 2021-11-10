@@ -40,7 +40,7 @@ def get_30360_daycount_frac(start, end):
 
 def get_actualactual_daycount_frac(start, end):
     # TODO
-    # result = ... 111111111111111111111111
+    # result = ... 
     # end TODO
     return(result)
 
