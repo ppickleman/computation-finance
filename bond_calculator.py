@@ -40,7 +40,11 @@ def get_30360_daycount_frac(start, end):
 
 def get_actualactual_daycount_frac(start, end):
     # TODO
-    # result = ... 
+    if(calendar.isleap(start.year) == 1 or calendar.isleap(end.year) == 1): day_in_year = 366
+    else: day_in_year = 365
+    
+    day_count = (end - start).days
+    result = (day_count / day_in_year)
     # end TODO
     return(result)
 
