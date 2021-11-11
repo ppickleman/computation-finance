@@ -61,8 +61,19 @@ class BondCalculator(object):
         # calculate the future cashflow vectors
         # TODO: calculate the one period discount factor
         # hint: need to use if else statement for different payment frequency cases
-        df = None
-        
+            freq=0
+            payment_frequency = bond.payment_freq
+         if payment_freq == PaymentFrequency.ANNUAL:  
+            freq=1
+            elif payment_freq == PaymentFrequency.SEMIANNUAL:
+                freq=2
+            elif payment_freq == PaymentFrequency.QUARTERLY:
+                freq=4
+            elif payment_freq == PaymentFrequency.MONTHLY:
+                freq=12
+            else:
+                raise Exception("Unsupported Payment frequency")
+          df= 1/(1 + yld / freq)
         # end TODO
         return(df)
 
