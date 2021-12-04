@@ -113,19 +113,19 @@ class Stock(object):
         '''
         result = None
         # TODO:
-        if self.get_beta() < 0.8:
+        if beta < 0.8:
             result = 0.05
-        elif 0.8 <= self.get_beta() < 1.0:
+        elif 0.8 <= beta < 1.0:
             result = 0.06
-        elif 1.0 <= self.get_beta() < 1.1:
+        elif 1.0 <= beta < 1.1:
             result = 0.065
-        elif 1.1 <= self.get_beta() < 1.2:
+        elif 1.1 <= beta < 1.2:
             result = 0.07
-        elif 1.2 <= self.get_beta() < 1.3:
+        elif 1.2 <= beta < 1.3:
             result = 0.075
-        elif 1.3 <= self.get_beta() < 1.5:
+        elif 1.3 <= beta < 1.5:
             result = 0.08
-        elif 1.5 <= self.get_beta() < 1.6:
+        elif 1.5 <= beta < 1.6:
             result = 0.085
         else:
             result = 0.09
