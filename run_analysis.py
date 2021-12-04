@@ -64,11 +64,67 @@ def run():
 
         # pull additional fields
         # ...
+        # DCF Value
+        AYearDF = 1 / (1 + stock.lookup_wacc_by_beta(stock.get_beta()))
+        FCF = stock.get_free_cashflow() # Free Cash Flow
+        DCF = 0
+        for i in range(1, 6):
+            DCF += FCF * (1 + short_term_growth_rate) ** i * AYearDF ** i
 
+        CF5 = FCF * (1 + short_term_growth_rate) ** 5
+
+        for i in range(1, 6):
+            DCF += CF5 * (1 + medium_term_growth_rate) ** i * AYearDF ** (i + 5)
+
+        CF10 = CF5 * (1 + medium_term_growth_rate) ** 5
+
+        for i in range(1, 11):
+            DCF += CF10 * (1 + long_term_growth_rate) ** i * AYearDF ** (i + 10)
+        try:
+            PV = stock.get_cash_and_cash_equivalent() - stock.get_total_debt() + DCF
+        except KeyError:
+            result = "N/A"
+            
+        current_price = stock.get_daily_hist_price() # Current Price
+        
+        # Sector
+        
+        market_cap = stock.get_num_shares_outstanding() * current_price # Market Cap
+        
+        beta = stock.get_beta() # Beta
+        
+        total_asset = stock.get_cash_and_cash_equivalent# Total Assets
+        
+        total_debt = stock.get_total_debt() # Total Debt
+        
+        #earning per share
+        eps = get_stock_earnings_data() / stock.get_num_shares_outstand() 
+        p_e_ratio = current_price / eps # P/E Ratio
+        # sales per share
+        sps = company sales / stock.get_num_shares_outstand()
+        p_s_ratio = current_price / sps # Price to Sale Ratio
+        
+        rsi = RSI(stock.ohlcv_df)
+        rsi_indicator = rsi.run()# RSI
+        
+        ema = ExpontialMovingAverages(stock.ohlcv_df, 10)
+        ema.run()
+        day_10_ema = ema.get_series(10) # 10 day EMA
+        
+        periods = [20, 50, 200]
+        smas = SimpleMovingAverages(stock.ohlcv_df, periods)
+        smas.run()
+        day_20_sma = smas.get_series(20) # 20 day SMA
+        day_50_sma = smas.get_series(50) # 50 day SMA
+        day_200_sma = smas.get_series(200) # 200 day SMA
+        
+        
 
     # save the output into a StockUniverseOutput.csv file
+
+    # ....
     
-    df.to_csv(output_fname)
+    df.to_csv(output_fname, index = False, na_rep = 'N/A')
     
     # end TODO
 
