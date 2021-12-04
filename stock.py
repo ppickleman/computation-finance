@@ -60,9 +60,7 @@ class Stock(object):
         result = None
         # TODO
         LongtermDebt = self.yfinancial.get_long_term_debt()
-        CurrentDebt = self.yfinancial.get_total_current_liabilities() - \
-                      self.yfinancial.get_account_payable() - \
-                      self.yfinancial.get_other_current_liabilities()
+        CurrentDebt = self.yfinancial.get_total_current_liabilities()-self.yfinancial.get_account_payable()-self.yfinancial.get_other_current_liabilities()
         result = LongtermDebt + CurrentDebt
         # end TODO
         return(result)
@@ -113,7 +111,7 @@ class Stock(object):
         '''
         result = None
         # TODO:
-        if beta < 0.8:
+        if beta is not None and beta < 0.8:
             result = 0.05
         elif 0.8 <= beta < 1.0:
             result = 0.06
