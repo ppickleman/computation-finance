@@ -146,7 +146,7 @@ class BondCalculator(object):
             return(px - bond_price)
 
         # TODO: implement details here
-        #yld, n_iteractions = bisection( ....)
+        #yld, n_iteractions = bisection(match_price, 0, 1, eps=1.0e-6)
         # end TODO:
         return(yld)
 
