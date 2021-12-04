@@ -58,24 +58,20 @@ class BondCalculator(object):
         self.pricing_date = pricing_date
 
     def calc_one_period_discount_factor(self, bond, yld):
-        # calculate the future cashflow vectors
-        # TODO: calculate the one period discount factor
-        # hint: need to use if else statement for different payment frequency cases
-            freq=0
-            payment_frequency = bond.payment_freq
-         if payment_freq == PaymentFrequency.ANNUAL:  
-            freq=1
-            elif payment_freq == PaymentFrequency.SEMIANNUAL:
-                freq=2
-            elif payment_freq == PaymentFrequency.QUARTERLY:
-                freq=4
-            elif payment_freq == PaymentFrequency.MONTHLY:
-                freq=12
-            else:
-                raise Exception("Unsupported Payment frequency")
-          df= 1/(1 + yld / freq)
-        # end TODO
-        return(df)
+        #TODO
+       payment_frequency = bond.payment_freq
+        if payment_frequency == PaymentFrequency.ANNUAL:
+            freq = 1
+        elif payment_frequency == PaymentFrequency.SEMIANNUAL:
+            freq = 2
+        elif payment_frequency == PaymentFrequency.QUARTERLY:
+            freq = 4
+        elif payment_frequency == PaymentFrequency.MONTHLY:
+            freq = 12
+        else:
+            raise Exception("Unsupported Payment Frequency")
+
+        return 1 / (1 + yld / freq)
 
 
     def calc_clean_price(self, bond, yld):
@@ -99,21 +95,23 @@ class BondCalculator(object):
         by calculating the previous payment date first and use the date count
         from previous payment date to the settle_date
         '''
+        #todo
         prev_pay_date = bond.get_previous_payment_date(settle_date)
         end_date = settle_date
 
-        # TODO: 
-        '''
-        if (bond.day_count == DayCount.DAYCOUNT_30360):
+        if bond.day_count == DayCount.DAYCOUNT_30360:
             frac = get_30360_daycount_frac(prev_pay_date, settle_date)
-        elif (bond.day_count == DayCount.DAYCOUNT_ACTUAL_360):
+            
+        elif bond.day_count == DayCount.DAYCOUNT_ACTUAL_360:
             frac = get_actual360_daycount_frac(prev_pay_date, settle_date)
-        ...
+            
+        elif bond.day_count == DayCount.DAYCOUNT_ACTUAL_ACTUAL:
+            frac = get_actualactual_daycount_frac(prev_pay_date, settle_date)
+            
+        else:
+            raise Exception("error Day Count")
 
-        result = frac * bond.coupon * bond.principal/100
-
-        '''
-
+        return frac * bond.coupon * bond.principal / 100
         # end TODO
         return(result)
 
