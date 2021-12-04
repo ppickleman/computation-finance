@@ -39,9 +39,8 @@ class Stock(object):
         Get daily historical OHLCV pricing dataframe
         '''
         # TODO
-        # data = self.yfinancial.get_historical...
-        # create a OHLCV data frame
-        # self.ohlcv_df =
+        self.ohlcv_df = self.yfinancial.get_historical_price_data(start_date, end_date, "daily")
+        return self.ohlcv_df
         #end TODO
         
     def calc_returns(self):
@@ -60,6 +59,11 @@ class Stock(object):
         '''
         result = None
         # TODO
+        LongtermDebt = self.yfinancial.get_long_term_debt()
+        CurrentDebt = self.yfinancial.get_total_current_liabilities() - \
+                      self.yfinancial.get_account_payable() - \
+                      self.yfinancial.get_other_current_liabilities()
+        result = LongtermDebt + CurrentDebt
         # end TODO
         return(result)
 
@@ -69,6 +73,7 @@ class Stock(object):
         '''
         result = None
         # TODO
+        result = self.yfinancial.get_operating_cashflow() + self.yfinancial.get_capital_expenditures()
         # end TODO
         return(result)
 
@@ -78,6 +83,7 @@ class Stock(object):
         '''
         result = None
         # TODO
+        result = self.yfinancial.get_cash() + self.yfinancial.get_short_term_investments()
         # end TODO
         return(result)
 
@@ -87,6 +93,7 @@ class Stock(object):
         '''
         result = None
         # TODO
+        result = self.yfinancial.get_beta()
         # end TODO
         return(result)
 
@@ -96,7 +103,7 @@ class Stock(object):
         '''
         result = None
         # TODO
-        #result = self.yfinancial.get_beta()
+        result = self.yfinancial.get_beta()
         # end TODO
         return(result)
 
@@ -106,6 +113,22 @@ class Stock(object):
         '''
         result = None
         # TODO:
+        if self.get_beta() < 0.8:
+            result = 0.05
+        elif 0.8 <= self.get_beta() < 1.0:
+            result = 0.06
+        elif 1.0 <= self.get_beta() < 1.1:
+            result = 0.065
+        elif 1.1 <= self.get_beta() < 1.2:
+            result = 0.07
+        elif 1.2 <= self.get_beta() < 1.3:
+            result = 0.075
+        elif 1.3 <= self.get_beta() < 1.5:
+            result = 0.08
+        elif 1.5 <= self.get_beta() < 1.6:
+            result = 0.085
+        else:
+            result = 0.09
         #end TODO
         return(result)
         
