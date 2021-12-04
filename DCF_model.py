@@ -2,9 +2,9 @@
 @project       : Queens College CSCI 365/765 Computational Finance
 @Instructor    : Dr. Alex Pang
 
-@Student Name  : first last
+@Student Name  : Zilong Zheng, 
 
-@Date          : June 2021
+@Date          : NOV 2021
 
 Discounted Cash Flow Model with Financial Data from Yahoo Financial
 
