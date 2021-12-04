@@ -93,7 +93,7 @@ class Stock(object):
         '''
         result = None
         # TODO
-        result = self.yfinancial.get_beta()
+        result = self.yfinancial.get_num_shares_outstanding()
         # end TODO
         return(result)
 
