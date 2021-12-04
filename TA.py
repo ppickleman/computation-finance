@@ -39,6 +39,7 @@ class SimpleMovingAverages(object):
         '''
         result = None
         #TODO
+        result = self.ohlcv_df[price_source].rolling(period, min_periods=1).mean()
         #end TODO
         return(result)
         
@@ -69,6 +70,8 @@ class ExponentialMovingAverages(object):
         '''
         result = None
         #TODO: implement details here
+        al= 2 / (1 + period)
+        result = self.ohlcv_df['close'].ewm(alpha=al, adjust=False).mean()
         #end TODO
         return(result)
         
@@ -98,7 +101,20 @@ class RSI(object):
         calculate RSI
         '''
         #TODO: implement details here
-        # self.rsi = ...
+        diff = self.ohlcv_df['close'].diff()
+        
+        gain = diff.copy()
+        gain[diff<=0]=0.0
+        
+        loss = abs(diff.copy())
+        loss[diff>0]=0.0
+        
+        avg_gain = gain.ewm(com=13,adjust=False, min_periods=14).mean()
+        avg_loss = loss.ewm(com=13,adjust=False, min_periods=14).mean()
+
+        rs = abs(gain/ loss)
+        
+        self.rsi = 100 - (100/(1+rs))
         #end TODO
 
 class VWAP(object):
@@ -115,6 +131,11 @@ class VWAP(object):
         calculate VWAP
         '''
         #TODO: implement details here
+        
+        price = (self.ohlcv_df['high'] + self.ohlcv_df['low'] + self.ohlcv_df['close']) / 3
+        self.vwap = ((self.ohlcv_df['volume'] * price).cumsum()) / self.ohlcv_df['volume'].cumsum() 
+        return(self.vwap)
+    
         #end TODO
 
 
