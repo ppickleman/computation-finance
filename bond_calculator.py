@@ -132,6 +132,8 @@ class BondCalculator(object):
         D = self.calc_macaulay_duration(bond, yld)
 
         # TODO: implement details here
+        one_period_factor = self.calc_one_period_discount_factor(bond, yld)
+        result= D*one_period_factor
         # end TODO:
         return(result)
 
@@ -146,7 +148,7 @@ class BondCalculator(object):
             return(px - bond_price)
 
         # TODO: implement details here
-        #yld, n_iteractions = bisection(match_price, 0, 1, eps=1.0e-6)
+        yld, n_iteractions = bisection(match_price, 0, 1, eps=1.0e-6)
         # end TODO:
         return(yld)
 
