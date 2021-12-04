@@ -59,7 +59,7 @@ class BondCalculator(object):
 
     def calc_one_period_discount_factor(self, bond, yld):
         #TODO
-       payment_frequency = bond.payment_freq
+        payment_frequency = bond.payment_freq
         if payment_frequency == PaymentFrequency.ANNUAL:
             freq = 1
         elif payment_frequency == PaymentFrequency.SEMIANNUAL:
@@ -79,15 +79,24 @@ class BondCalculator(object):
         Calculate bond price as of the pricing_date for a given yield
         bond price should be expressed in percentage eg 100 for a par bond
         '''
-        result = None
+        px = None
         
         one_period_factor = self.calc_one_period_discount_factor(bond, yld)
         # TODO: implement calculation here
-
+        DF = [math.pow(one_period_factor, i+1) for i in range(len(bond.coupon_payment))]
+        CF = bond.coupon_payment.copy()
+        CF[-1] += bond.principal
+        PVs = [ CF[i] * DF[i] for i in range(len(bond.coupon_payment))]
+        TotalPV=0
+        for i in PVs:
+            TotalPV = TotalPV + i
+            
+        px = TotalPV/bond.principal
+        
+        return(px*100)
 
         # end TODO:
         
-        return(result)
 
     def calc_accrual_interest(self, bond, settle_date):
         '''
@@ -97,7 +106,6 @@ class BondCalculator(object):
         '''
         #todo
         prev_pay_date = bond.get_previous_payment_date(settle_date)
-        end_date = settle_date
 
         if bond.day_count == DayCount.DAYCOUNT_30360:
             frac = get_30360_daycount_frac(prev_pay_date, settle_date)
@@ -107,11 +115,10 @@ class BondCalculator(object):
             
         elif bond.day_count == DayCount.DAYCOUNT_ACTUAL_ACTUAL:
             frac = get_actualactual_daycount_frac(prev_pay_date, settle_date)
-            
         else:
             raise Exception("error Day Count")
 
-        return frac * bond.coupon * bond.principal / 100
+        result=frac * bond.coupon * bond.principal / 100
         # end TODO
         return(result)
 
@@ -120,7 +127,15 @@ class BondCalculator(object):
         time to cashflow weighted by PV
         '''
         # TODO: implement details here
-        #result =( sum(wavg) / sum(PVs))
+        one_period_factor = self.calc_one_period_discount_factor(bond, yld)
+        
+        DF = [math.pow(one_period_factor, i+1) for i in range(len(bond.coupon_payment))]
+        CF = [c for c in bond.coupon_payment]
+        CF[-1] += bond.principal
+        
+        PVs = [ CF[i] * DF[i] for i in range(len(bond.coupon_payment))]
+        wavg = [bond.payment_times_in_year[i] * PVs[i] for i in range(len(bond.coupon_payment))]
+        result =( sum(wavg) / sum(PVs))
 
         # end TODO
         return(result)
@@ -154,10 +169,21 @@ class BondCalculator(object):
 
     def calc_convexity(self, bond, yld):
         # calculate convexity of a bond at a certain yield yld
+        #todo
+        one_period_factor = self.calc_one_period_discount_factor(bond, yld)
+        
+        df = [math.pow(one_period_factor, i + 1) for i in range(len(bond.coupon_payment))]
+        cf = bond.coupon_payment.copy()
+        cf[-1] += bond.principal
+        pv = [cf[i] * df[i] for i in range(len(bond.coupon_payment))]
 
-        # TODO: implement details here
-        # result = sum(wavg) / sum(PVs))
-        return( result)
+        payment_times = bond.payment_times_in_year
+
+        wavg = [payment_times[i] * pv[i] * (payment_times[i] + payment_times[0]) * one_period_factor ** 2
+                       for i in range(len(bond.payment_times_in_year))]
+
+        result=sum(wavg) / sum(pv)
+        return(result)
 
 
 ##########################  some test cases ###################
