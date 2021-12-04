@@ -61,7 +61,33 @@ class DiscountedCashFlowModel(object):
         5. Return the stock fair value of the stock
         '''
         
-        #TODO
+       #TODO
+        # One year Discount factor
+        AYearDF = 1 / (1 + self.stock.lookup_wacc_by_beta(self.stock.get_beta()))
+        # Free Cash Flow
+        FCF = self.stock.get_free_cashflow()
+
+        # defined discount cash flow
+        DCF = 0
+        for i in range(1, 6):
+            DCF += FCF * (1 + self.short_term_growth_rate) ** i * AYearDF ** i
+
+        CF5 = FCF * (1 + self.short_term_growth_rate) ** 5
+
+        for i in range(1, 6):
+            DCF += CF5 * (1 + self.medium_term_growth_rate) ** i * AYearDF ** (i + 5)
+
+        CF10 = CF5 * (1 + self.medium_term_growth_rate) ** 5
+
+        for i in range(1, 11):
+            DCF += CF10 * (1 + self.long_term_growth_rate) ** i * AYearDF ** (i + 10)
+        # get PV and fair value
+        try:
+            PV = self.stock.get_cash_and_cash_equivalent() - self.stock.get_total_debt() + DCF
+            result = PV / self.stock.get_num_shares_outstanding()
+        except KeyError:
+            result = "N/A"
+
         #end TODO
         return(result)
 
