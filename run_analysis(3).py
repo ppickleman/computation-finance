@@ -68,7 +68,7 @@ def run():
 
     # save the output into a StockUniverseOutput.csv file
     
-    # ....
+    df.to_csv(output_fname)
     
     # end TODO
 
