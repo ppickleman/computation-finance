@@ -1,18 +1,15 @@
 '''
 @project       : Queens College CSCI 365/765 Computational Finance
 @Instructor    : Dr. Alex Pang
-
 @Student Name  : Zilong Zheng
-
 @Date          : Nov 2021
-
-
 '''
 import enum
 import calendar
 import math
 import pandas as pd
 import numpy as np
+
 
 import datetime 
 from scipy.stats import norm
@@ -33,13 +30,16 @@ class Stock(object):
         self.yfinancial = MyYahooFinancials(symbol, freq)
         self.ohlcv_df = None
         
+        
 
     def get_daily_hist_price(self, start_date, end_date):
         '''
         Get daily historical OHLCV pricing dataframe
         '''
         # TODO
-        self.ohlcv_df = self.yfinancial.get_historical_price_data(start_date, end_date, "daily")
+        self.start_date = start_date.strftime("%Y-%m-%d")
+        self.end_date = end_date.strftime("%Y-%m-%d")
+        self.ohlcv_df = self.yfinancial.get_historical_price_data(self.start_date, self.end_date, 'daily')
         return self.ohlcv_df
         #end TODO
         
@@ -130,22 +130,43 @@ class Stock(object):
         #end TODO
         return(result)
         
-
+    #get_current_price
+    def get_current_price(self):
+      result = 0;
+      result = self.yfinancial.get_current_price()
+      return(result)
+    #get_pe_ratio
+    def get_pe_ratio(self):
+      result = 0;
+      result = self.yfinancial.get_pe_ratio()
+      return(result)
+    #get_price_to_sales
+    def get_price_to_sales(self):
+      result = 0;
+      result = self.yfinancial.get_price_to_sales()
+      return(result)
+    #get_market_cap
+    def get_market_cap(self):
+      result = 0;
+      result = self.yfinancial.get_market_cap()
+      return(result)
 
 
 def _test():
-     # a few basic unit tests
+    # a few basic unit tests
     symbol = 'AAPL'
     stock = Stock(symbol)
     print(f"Free Cash Flow for {symbol} is {stock.get_free_cashflow()}")
-
-    
-    start_date = '2020-01-01'
-    end_date = '2021-11-01'
+    print(f"pe ratio fro {symbol} is {stock.get_pe_ratio()}")
+    print(f"current price fro {symbol} is {stock.get_current_price()}")
+    print(f"price to sales fro {symbol} is {stock.get_price_to_sales()}")
+    print(f"market cap fro {symbol} is {stock.get_market_cap()}")
+    # 
+    start_date = datetime.date(2020, 1, 1)
+    end_date = datetime.date(2021, 11, 1)
     stock.get_daily_hist_price(start_date, end_date)
-    beta=stock.get_beta()
-    stock.ohlcv_df=pd.DataFrame({'Name': ['toal beta', 'wacc', 'shares', 'fcc', 'cash'],
-                         'Class': [stock.get_beta(),stock.lookup_wacc_by_beta(beta),stock.get_num_shares_outstanding() ,stock.get_free_cashflow(), stock.get_cash_and_cash_equivalent()]})
+    stock.ohlcv_df=pd.DataFrame({'Name': ['toal beta', 'shares', 'fcc', 'cash'],
+                         'Class': [stock.get_beta(),stock.get_num_shares_outstanding() ,stock.get_free_cashflow(), stock.get_cash_and_cash_equivalent()]})
     print(type(stock.ohlcv_df))
     print(stock.ohlcv_df.head())
 
