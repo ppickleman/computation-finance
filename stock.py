@@ -129,27 +129,6 @@ class Stock(object):
             result = 0.09
         #end TODO
         return(result)
-        
-    #get_current_price
-    def get_current_price(self):
-      result = 0;
-      result = self.yfinancial.get_current_price()
-      return(result)
-    #get_pe_ratio
-    def get_pe_ratio(self):
-      result = 0;
-      result = self.yfinancial.get_pe_ratio()
-      return(result)
-    #get_price_to_sales
-    def get_price_to_sales(self):
-      result = 0;
-      result = self.yfinancial.get_price_to_sales()
-      return(result)
-    #get_market_cap
-    def get_market_cap(self):
-      result = 0;
-      result = self.yfinancial.get_market_cap()
-      return(result)
 
 
 def _test():
