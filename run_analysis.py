@@ -85,24 +85,21 @@ def run():
         except KeyError:
             result = "N/A"
             
-        current_price = stock.get_daily_hist_price() # Current Price
+        current_price = stock.get_current_price() # Current Price
         
         # Sector
         
-        market_cap = stock.get_num_shares_outstanding() * current_price # Market Cap
+        market_cap = stock.get_market_cap # Market Cap
         
         beta = stock.get_beta() # Beta
         
         total_asset = stock.get_cash_and_cash_equivalent# Total Assets
         
         total_debt = stock.get_total_debt() # Total Debt
-        
-        #earning per share
-        eps = get_stock_earnings_data() / stock.get_num_shares_outstand() 
-        p_e_ratio = current_price / eps # P/E Ratio
-        # sales per share
-        sps = company sales / stock.get_num_shares_outstand()
-        p_s_ratio = current_price / sps # Price to Sale Ratio
+       
+        p_e_ratio = stock.get_pe_ratio # P/E Ratio
+
+        p_s_ratio = stock.get_price_to_sales # Price to Sale Ratio
         
         rsi = RSI(stock.ohlcv_df)
         rsi_indicator = rsi.run()# RSI
