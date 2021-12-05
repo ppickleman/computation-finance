@@ -116,13 +116,13 @@ def run():
           
         # P/E Ratio
         try:
-          p_e_ratio.append(stock.get_p_e_ratio())
+          p_e_ratio.append(stock.get_pe_ratio())
         except:
           p_e_ratio.append('blank')
         
         # P/S ratio
         try:
-          p_s_ratio.append(stock.get_p_s_ratio())
+          p_s_ratio.append(stock.get_price_to_sales())
         except:
           p_s_ratio.append('blank')
 
