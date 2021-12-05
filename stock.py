@@ -134,15 +134,18 @@ class Stock(object):
 
 
 def _test():
-    # a few basic unit tests
+     # a few basic unit tests
     symbol = 'AAPL'
     stock = Stock(symbol)
     print(f"Free Cash Flow for {symbol} is {stock.get_free_cashflow()}")
 
-    # 
-    start_date = datetime.date(2020, 1, 1)
-    end_date = datetime.date(2021, 11, 1)
+    
+    start_date = '2020-01-01'
+    end_date = '2021-11-01'
     stock.get_daily_hist_price(start_date, end_date)
+    beta=stock.get_beta()
+    stock.ohlcv_df=pd.DataFrame({'Name': ['toal beta', 'wacc', 'shares', 'fcc', 'cash'],
+                         'Class': [stock.get_beta(),stock.lookup_wacc_by_beta(beta),stock.get_num_shares_outstanding() ,stock.get_free_cashflow(), stock.get_cash_and_cash_equivalent()]})
     print(type(stock.ohlcv_df))
     print(stock.ohlcv_df.head())
 
