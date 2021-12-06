@@ -101,19 +101,15 @@ class RSI(object):
         calculate RSI
         '''
         #TODO: implement details here
-        diff = self.ohlcv_df['close'].diff()
-        
-        gain = diff.copy()
-        gain[diff<=0]=0.0
-        
-        loss = abs(diff.copy())
-        loss[diff>0]=0.0
-        
-        avg_gain = gain.ewm(com=13,adjust=False, min_periods=14).mean()
-        avg_loss = loss.ewm(com=13,adjust=False, min_periods=14).mean()
+        close_delta = self.ohlcv_df['close'].diff()
+        up = close_delta.clip(lower = 0)
+        down = close_delta.clip(upper=0)
+
+        rsi_p = 14
+        gain = up.ewm(com = rsi_p-1, min_periods = 1, adjust = False).mean()
+        loss = down.ewm(com = rsi_p-1, min_periods = 1, adjust =False).mean()
 
         rs = abs(gain/ loss)
-        
         self.rsi = 100 - (100/(1+rs))
         #end TODO
 
