@@ -4,7 +4,7 @@
 @Instructor    : Dr. Alex Pang
 
 @Group Name    : group 11
-@Student Name  : zilong zheng, 
+@Student Name  : Zilong Zheng, Yinan Du, Brian Luu
 
 @Date          : Fall 2021
 
