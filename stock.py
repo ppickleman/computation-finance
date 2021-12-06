@@ -9,14 +9,14 @@ import calendar
 import math
 import pandas as pd
 import numpy as np
+import yfinance as yf
 
-
-import datetime 
+import datetime
 from scipy.stats import norm
 
 from math import log, exp, sqrt
 
-from utils import MyYahooFinancials 
+from utils import MyYahooFinancials
 
 class Stock(object):
     '''
@@ -29,8 +29,8 @@ class Stock(object):
         self.dividend_yield = dividend_yield
         self.yfinancial = MyYahooFinancials(symbol, freq)
         self.ohlcv_df = None
-        
-        
+
+
 
     def get_daily_hist_price(self, start_date, end_date):
         '''
@@ -39,10 +39,11 @@ class Stock(object):
         # TODO
         self.start_date = start_date.strftime("%Y-%m-%d")
         self.end_date = end_date.strftime("%Y-%m-%d")
-        self.ohlcv_df = self.yfinancial.get_historical_price_data(self.start_date, self.end_date, 'daily')
+        data = self.yfinancial.get_historical_price_data(self.start_date, self.end_date, 'daily')
+        self.ohlcv_df = pd.DataFrame(data[self.symbol]['prices'])
         return self.ohlcv_df
         #end TODO
-        
+
     def calc_returns(self):
         '''
         '''
@@ -52,7 +53,7 @@ class Stock(object):
 
 
     # financial statements related methods
-    
+
     def get_total_debt(self):
         '''
         return Total debt of the company
@@ -151,6 +152,7 @@ class Stock(object):
       result = self.yfinancial.get_market_cap()
       return(result)
 
+
 def _test():
     # a few basic unit tests
     symbol = 'AAPL'
@@ -160,14 +162,14 @@ def _test():
     print(f"current price fro {symbol} is {stock.get_current_price()}")
     print(f"price to sales fro {symbol} is {stock.get_price_to_sales()}")
     print(f"market cap fro {symbol} is {stock.get_market_cap()}")
-    # 
+    #
     start_date = datetime.date(2020, 1, 1)
     end_date = datetime.date(2021, 11, 1)
     stock.get_daily_hist_price(start_date, end_date)
-    stock.ohlcv_df=pd.DataFrame({'Name': ['toal beta', 'shares', 'fcc', 'cash'],
-                         'Class': [stock.get_beta(),stock.get_num_shares_outstanding() ,stock.get_free_cashflow(), stock.get_cash_and_cash_equivalent()]})
+
     print(type(stock.ohlcv_df))
     print(stock.ohlcv_df.head())
+
 
 
 
