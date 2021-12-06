@@ -2,7 +2,7 @@
 @project       : Queens College CSCI 365/765 Computational Finance
 @Instructor    : Dr. Alex Pang
 @Date          : June 2021
-@Student Name  : Zilong Zheng
+@Student Name  : Zilong Zheng, Yinan Du, Brian Luu
 @Date          : Nov 2021
 '''
 
